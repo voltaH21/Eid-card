@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بطاقة تهنئة العيد</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #card-container { position: relative; display: inline-block; }
+        #name-input { margin: 10px; padding: 5px; font-size: 16px; }
+        #download-btn { padding: 10px 20px; background: green; color: white; border: none; cursor: pointer; }
+        canvas { display: none; }
+    </style>
+</head>
+<body>
+    <h2>اكتب اسمك لتحصل على بطاقة تهنئة العيد</h2>
+    <input type="text" id="name-input" placeholder="اكتب اسمك هنا">
+    <button id="download-btn">تحميل البطاقة</button>
+    <br><br>
+    <div id="card-container">
+        <img id="card-image" src="eid_card.jpg" width="300" alt="بطاقة العيد" onerror="alert('⚠️ خطأ: لم يتم العثور على الصورة! تأكد من وجود eid_card.jpg في نفس المجلد.')">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        document.getElementById("download-btn").addEventListener("click", function() {
+            let name = document.getElementById("name-input").value.trim();
+            if (!name) {
+                alert("يرجى إدخال الاسم أولاً");
+                return;
+            }
+
+            let img = document.getElementById("card-image");
+            let canvas = document.getElementById("canvas");
+            let ctx = canvas.getContext("2d");
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // ضبط موقع النص
+            ctx.font = "22px Arial";
+            ctx.fillStyle = "maroon";
+            ctx.textAlign = "center";
+            ctx.fillText(name, canvas.width / 2, canvas.height - 80); // تعديل موقع الاسم حسب الحاجة
+
+            let link = document.createElement("a");
+            link.download = "eid_card.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
+    </script>
+</body>
+</html>
