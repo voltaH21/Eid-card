@@ -10,6 +10,12 @@
         #name-input { margin: 10px; padding: 5px; font-size: 16px; }
         #download-btn { padding: 10px 20px; background: green; color: white; border: none; cursor: pointer; }
         canvas { display: none; }
+        
+        /* تضمين الخط GE SS */
+        @font-face {
+            font-family: "GE SS";
+            src: url("Users/hamzamac/Downloads/EidCard/fonts/GE-Hili-Light_15.otf") format("truetype"); /* تأكد من وضع مسار الخط الصحيح */
+        }
     </style>
 </head>
 <body>
@@ -34,19 +40,24 @@
             let canvas = document.getElementById("canvas");
             let ctx = canvas.getContext("2d");
 
-            canvas.width = img.width;
-            canvas.height = img.height;
+            // تحسين دقة الصورة
+            let scaleFactor = 8; // زيادة عامل التحجيم لتحسين الجودة
+            canvas.width = img.width * scaleFactor;
+            canvas.height = img.height * scaleFactor;
+
+            // رسم الصورة على canvas مع تحسين الجودة
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-            // ضبط موقع النص
-            ctx.font = "22px Arial";
+            // استخدام خط GE SS
+            ctx.font = "150px GE SS";  // تحديد الخط GE SS
             ctx.fillStyle = "maroon";
             ctx.textAlign = "center";
-            ctx.fillText(name, canvas.width / 2, canvas.height - 80); // تعديل موقع الاسم حسب الحاجة
+            ctx.fillText(name, canvas.width / 2, canvas.height - 700); // تعديل موقع الاسم حسب الحاجة
 
+            // تنزيل الصورة المعدلة
             let link = document.createElement("a");
             link.download = "eid_card.png";
-            link.href = canvas.toDataURL("image/png");
+            link.href = canvas.toDataURL("image/png", 1.0); // 1.0 تعني أعلى جودة ممكنة
             link.click();
         });
     </script>
